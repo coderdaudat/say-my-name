@@ -14,9 +14,9 @@ node {
   def imageTag = "heshamm/say-my-name:${appVersion}"
   def dockerImage = docker.build imageTag
 
-  stage "Publish docker images to docker registry"
-  docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
-      dockerImage.push()
+#  stage "Publish docker images to docker registry"
+#  docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
+#      dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
             dockerImage.push 'staging'
@@ -43,5 +43,5 @@ node {
             sh("echo http://`kubectl --namespace=production get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
       }
-  }
+#  }
 }
