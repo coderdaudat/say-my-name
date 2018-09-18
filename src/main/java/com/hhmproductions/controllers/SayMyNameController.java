@@ -31,7 +31,7 @@ public class SayMyNameController {
         String hostName = InetAddress.getLocalHost().getHostName();
         String hostAddress = InetAddress.getLocalHost().getHostAddress();
 
-        return "Hello Mr. " + name + "!";
+        return "Ahoy Mr. " + name + "!";
     }
 
     @RequestMapping("/**")
