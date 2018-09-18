@@ -26,6 +26,14 @@ public class SayMyNameController {
         return "Hi " + name + "! :) It's " + hostName + ":" + hostAddress;
     }
 
+    @RequestMapping("/{name}")
+    public String say(@PathVariable String name) throws UnknownHostException {
+        String hostName = InetAddress.getLocalHost().getHostName();
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+
+        return "Hello " + name + "!";
+    }
+
     @RequestMapping("/**")
     public String getAll() throws NoSuchMethodException {
         logger.error("This endpoint is not found!");
