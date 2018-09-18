@@ -26,7 +26,7 @@ public class SayMyNameController {
         return "Hi " + name + "! :) It's " + hostName + ":" + hostAddress;
     }
 
-    @RequestMapping("/{name}")
+    @RequestMapping("/hi/{name}")
     public String say(@PathVariable String name) throws UnknownHostException {
         String hostName = InetAddress.getLocalHost().getHostName();
         String hostAddress = InetAddress.getLocalHost().getHostAddress();
