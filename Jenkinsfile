@@ -11,7 +11,7 @@ node {
   stage "Build docker image"
   def pom = readMavenPom file: 'pom.xml'
   def appVersion = pom.version
-  def imageTag = "heshamm/say-my-name:${appVersion}"
+  def imageTag = "beemob-test/say-my-name:${appVersion}"
   def dockerImage = docker.build imageTag
 
   stage "Publish docker images to docker registry"
