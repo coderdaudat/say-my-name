@@ -15,8 +15,11 @@ node {
   def dockerImage = docker.build imageTag
 
   stage "Publish docker images to docker registry"
+  docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
+      dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
+            dockerImage.push 'staging'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns staging || kubectl create ns staging")
@@ -28,6 +31,7 @@ node {
             sh("echo http://`kubectl --namespace=staging get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
         case "master":
+            dockerImage.push 'production'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns production || kubectl create ns production")
@@ -39,4 +43,5 @@ node {
             sh("echo http://`kubectl --namespace=production get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
       }
+   }
 }
