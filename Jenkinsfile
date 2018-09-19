@@ -15,7 +15,7 @@ node {
   def dockerImage = docker.build imageTag
 
   stage "Publish docker images to docker registry"
-  docker.withRegistry('https://gcr.io', 'gcr:say-my-name') {
+  docker.withRegistry('https://us.gcr.io', 'gcr:say-my-name') {
       dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
