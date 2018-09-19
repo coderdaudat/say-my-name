@@ -21,7 +21,7 @@ node {
   }
 
   stage "Publish docker images to docker registry"
-  docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
+  docker.withRegistry("", registryCredential) {
       dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
