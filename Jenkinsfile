@@ -14,13 +14,8 @@ node {
   def imageTag = "heshamm/say-my-name:${appVersion}"
   def dockerImage = docker.build imageTag
 
-  environment {
-      registry = "coderdaudat/say-my-name/"
-      registryCredential = 'dockerhub'
-  }
-
   stage "Publish docker images to docker registry"
-  docker.withRegistry("", registryCredential) {
+  docker.withRegistry("https://registry.hub.docker.com", 'dockerhub') {
       dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
