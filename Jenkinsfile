@@ -14,6 +14,12 @@ node {
   def imageTag = "heshamm/say-my-name:${appVersion}"
   def dockerImage = docker.build imageTag
 
+  environment {
+      registry = "coderdaudat/say-my-name/"
+      registryCredential = 'dockerhub'
+      dockerImage = ''
+  }
+
   stage "Publish docker images to docker registry"
   docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
       dockerImage.push()
