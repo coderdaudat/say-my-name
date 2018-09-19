@@ -17,7 +17,6 @@ node {
   environment {
       registry = "coderdaudat/say-my-name/"
       registryCredential = 'dockerhub'
-      dockerImage = ''
   }
 
   stage "Publish docker images to docker registry"
