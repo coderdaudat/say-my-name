@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: heshamm/say-my-name:latest
+        image: beemob-test/say-my-name:latest
         resources:
           limits:
             memory: "500Mi"
