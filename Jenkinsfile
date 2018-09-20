@@ -23,8 +23,8 @@ node {
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns staging || kubectl create ns staging")
-            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/deployments/staging/*.yaml")
-            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/services/staging/*.yaml")
+            sh("sed -i.bak 's#beemob-test/say-my-name:latest#${imageTag}#' ./k8s/deployments/staging/*.yaml")
+            sh("sed -i.bak 's#beemob-test/say-my-name:latest#${imageTag}#' ./k8s/services/staging/*.yaml")
             sh("kubectl --namespace=staging apply -f k8s/services/staging")
             sh("kubectl --namespace=staging apply -f k8s/deployments/staging")
             def serviceName = "say-my-name-frontend-staging"
@@ -35,8 +35,8 @@ node {
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns production || kubectl create ns production")
-            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/deployments/production/*.yaml")
-            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/services/production/*.yaml")
+            sh("sed -i.bak 's#beemob-test/say-my-name:latest#${imageTag}#' ./k8s/deployments/production/*.yaml")
+            sh("sed -i.bak 's#beemob-test/say-my-name:latest#${imageTag}#' ./k8s/services/production/*.yaml")
             sh("kubectl --namespace=production apply -f k8s/services/production")
             sh("kubectl --namespace=production apply -f k8s/deployments/production")
             def serviceName = "say-my-name-frontend-production"
