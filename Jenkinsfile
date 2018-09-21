@@ -1,5 +1,6 @@
 node {
   stage 'Checkout'
+  sh("kubectl config view")
   checkout scm
 
   def mvnHome = tool 'M3'
