@@ -128,11 +128,29 @@ as seen in the screenshot below.
 To fully utilize the advantages of stack driver's error reporting and logging, one has to use one of the client
 libraries provided by google which are still in [beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions)
 and not recommended for production purposes. 
+
+We don't need to use the [beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions) client 
+libraries provided by google. Fluentd log collector (alternative to Logstash in an ELK stack) is already pre installed
+by the GKE in the Kubernetes cluster. In order to correctly utilize error reporting logs have to be formatted in specific formats like: 
+- https://cloud.google.com/error-reporting/docs/formatting-error-messages
+- an example implementation for sl4j/logback is [here](http://stackoverflow.com/questions/37420400/how-do-i-map-my-java-app-logging-events-to-corresponding-cloud-logging-event-lev)
+- Further investigation should be done on all the functionailities of error reporting of the Stackdriver logging stack.
+- An ELK stack could still be used instead of stack driver.
+
+
  
 
 ##Dynamic Configuration
 
 Using the kubernetes [environment variables expanstion](http://kubernetes.io/docs/user-guide/configuring-containers/#environment-variables-and-variable-expansion) you can easily set the environment variables for every container. A typical use case is to add a set of environment variables for our `env: production` pods different than that of the `env: staging` pods. 
+
+[*Secrets*](https://kubernetes.io/docs/user-guide/secrets/)
+A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key. Such information might otherwise be put in a Pod specification or in an image; putting it in a Secret object allows for more control over how it is used, and reduces the risk of accidental exposure.
+Users can create secrets, and the system also creates some secrets.
+
+[*configmap*](https://kubernetes.io/docs/user-guide/configmap/)
+The ConfigMap API resource holds key-value pairs of configuration data that can be consumed in pods or used to store configuration data for system components such as controllers. ConfigMap is similar to Secrets, but designed to more conveniently support working with strings that do not contain sensitive information.
+
 
 ##GAE vs GKE vs Self-managed Kubernetes
  
@@ -185,3 +203,6 @@ kubernetes master. GKE guarntees etcd's uptime.
 to the new cluster. However, with GKE its done with one command.
 7. Heapster tool for monitoring is pre-installed with the GKE cluster. 
 8. Stackdriver's monitoring and logging has support for cluster level logging. 
+
+#####Docker Registries
+Any private docker registry could be used in the kubernetes cluster to pull the docker images including nexus 3. [Here](https://blog.cloudhelix.io/using-a-private-docker-registry-with-kubernetes-f8d5f6b8f646#.56o8w13bp) is an example. However, having the nexus repository in an internal network that's not accessible publicly from the internet could be a problem. 
