@@ -1,7 +1,7 @@
 node {
   stage 'Checkout'
   sh("kubectl config --kubeconfig=/home/truongnguyen/config-exercise/config-say-my-name use-context dev-staging")
-  sh("export  KUBECONFIG=$KUBECONFIG:config-say-my-name")
+  //sh("export KUBECONFIG=$KUBECONFIG:config-say-my-name")
   sh("kubectl config view")
   checkout scm
 
