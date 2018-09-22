@@ -5,7 +5,6 @@ def  appName = 'say-my-name'
 def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
 spec:
-  # Use service account that can deploy to all namespaces
   serviceAccountName: cd-jenkins
   containers:
   - name: java
