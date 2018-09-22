@@ -12,14 +12,14 @@ node {
   def pom = readMavenPom file: 'pom.xml'
   def appVersion = pom.version
   def imageTag = "beemob-test/say-my-name:${appVersion}"
-  def dockerImage = docker.build imageTag
+  sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
 
   stage "Publish docker images to docker registry"
   docker.withRegistry('https://us.gcr.io', 'gcr:jenkins-cd') {
-      dockerImage.push()
+      //dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
-            dockerImage.push 'staging'
+            //dockerImage.push 'staging'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns staging || kubectl create ns staging")
@@ -31,7 +31,7 @@ node {
             sh("echo http://`kubectl --namespace=staging get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
         case "master":
-            dockerImage.push 'production'
+            //dockerImage.push 'production'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns production || kubectl create ns production")
