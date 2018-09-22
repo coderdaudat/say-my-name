@@ -10,7 +10,7 @@ def appVersion = pom.version
 pipeline {
   agent {
     kubernetes {
-      label 'say-my-name-app'
+      label 'say-my-name'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
@@ -40,21 +40,23 @@ spec:
 """
 }
   }
+
   stages {
-    stage('Checkout'){
-      steps {
-        checkout scm
-      }
-    }
+    //stage('Checkout'){
+     // steps {
+     //   checkout scm
+     // }
+    //}
 
     stage('Build the JAR') {
       steps {
         container('java') {
           sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
-          step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+          //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
         }
       }
     }
+
     stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
@@ -62,6 +64,7 @@ spec:
         }
       }
     }
+
     stage('Deploy Staging') {
       // staing branch
       when { branch 'staging' }
@@ -78,6 +81,7 @@ spec:
         }
       }
     }
+
     stage('Deploy Production') {
       // Production branch
       when { branch 'master' }
@@ -93,5 +97,6 @@ spec:
         }
       }
     }
+
   }
 }
