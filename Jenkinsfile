@@ -42,14 +42,22 @@ spec:
   }
 
   stages {
-      //stage('Checkout'){
+      //stage('Checkout') {
        // steps {
        //   checkout scm
        // }
       //}
 
+      stage('Build the JAR') {
+        steps {
+          container('java') {
+            sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
+             //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+          }
+        }
+      }
 
 
-    }
+  }
 
 }
