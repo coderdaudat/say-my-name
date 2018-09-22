@@ -23,7 +23,7 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
    //   }
 
   stage "Publish docker images to docker registry"
-  docker.withRegistry('https://us.gcr.io', 'gcr:jenkins-cd') {
+  //docker.withRegistry('https://us.gcr.io', 'gcr:jenkins-cd') {
       //dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
@@ -51,5 +51,5 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
             sh("echo http://`kubectl --namespace=production get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
       }
-   }
+  // }
 }
