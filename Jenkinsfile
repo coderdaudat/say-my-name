@@ -19,7 +19,7 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
  // def imageTag = "beemob-test/say-my-name:${appVersion}"
  // sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
  // container('gcloud') {
-            sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
+  //          sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
    //   }
 
   stage "Publish docker images to docker registry"
