@@ -4,16 +4,6 @@ def project = 'beemob-test'
 def  appName = 'say-my-name'
 def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
-agent {
-    kubernetes {
-      label 'say-my-name'
-      defaultContainer 'jnlp'
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-labels:
-  component: ci
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: cd-jenkins
@@ -33,9 +23,6 @@ spec:
     command:
     - cat
     tty: true
-"""
-}
-  }
 
   stage 'Checkout'
   checkout scm
