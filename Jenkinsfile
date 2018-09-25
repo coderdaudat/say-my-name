@@ -14,20 +14,22 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
   stage "Build docker image"
- // def pom = readMavenPom file: 'pom.xml'
- // def appVersion = pom.version
- // def imageTag = "beemob-test/say-my-name:${appVersion}"
+  def pom = readMavenPom file: 'pom.xml'
+  def appVersion = pom.version
+  def imageTag = "beemob-test/say-my-name:${appVersion}"
+  def dockerImage = docker.build imageTag
+
  // sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
  // container('gcloud') {
   //          sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
    //   }
 
   stage "Publish docker images to docker registry"
-  //docker.withRegistry('https://us.gcr.io', 'gcr:jenkins-cd') {
-      //dockerImage.push()
+  docker.withRegistry('https://us.gcr.io', 'gcr:jenkins-cd') {
+      dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
-            //dockerImage.push 'staging'
+            dockerImage.push 'staging'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns staging || kubectl create ns staging")
@@ -39,7 +41,7 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
             sh("echo http://`kubectl --namespace=staging get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
         case "master":
-            //dockerImage.push 'production'
+            dockerImage.push 'production'
             stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
             sh("kubectl get ns production || kubectl create ns production")
@@ -51,5 +53,5 @@ def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUM
             sh("echo http://`kubectl --namespace=production get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
       }
-  // }
+   }
 }
