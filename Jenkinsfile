@@ -2,7 +2,7 @@ node {
 
 def project = 'beemob-test'
 def  appName = 'say-my-name'
-def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+//def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
   stage 'Checkout'
   checkout scm
