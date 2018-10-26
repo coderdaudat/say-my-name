@@ -3,7 +3,7 @@ A spring-boot microservice to demonstrate docker container orchestration using a
 
 ###About the sample microservice
 Production: http://104.155.85.38/say/there
-a
+
 Staging: http://130.211.93.195/say/there
 
 
